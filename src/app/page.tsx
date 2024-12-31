@@ -1,34 +1,110 @@
 "use client"
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import BrandLogo from "../../public/images/Sportelo Final.png"
+
+const BackgroundElement = ({ index }: { index: number }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Create more spread out initial positions
+  const initialX = `${(index % 4) * 25}%`;
+  const initialY = `${Math.floor(index / 4) * 25}%`;
+
+  // Generate random final positions that ensure movement
+  const getFinalPosition = () => ({
+    x: `${Math.random() * 80 + 10}%`,  
+    y: `${Math.random() * 80 + 10}%`,
+    scale: Math.random() * 1.5 + 0.5,
+  });
+
+  if (!mounted) {
+    return (
+      <div
+        className="absolute w-8 sm:w-12 md:w-16 h-8 sm:h-12 md:h-16 rounded-full bg-red-600/10"
+        style={{ left: initialX, top: initialY }}
+      />
+    );
+  }
+
+  return (
+    <motion.div
+      className="absolute w-8 sm:w-12 md:w-16 h-8 sm:h-12 md:h-16 rounded-full bg-red-600/10"
+      initial={{ left: initialX, top: initialY, scale: 1 }}
+      animate={{
+        left: [initialX, getFinalPosition().x, initialX],
+        top: [initialY, getFinalPosition().y, initialY],
+        scale: [1, getFinalPosition().scale, 1],
+      }}
+      transition={{
+        duration: 20,
+        repeat: Infinity,
+        repeatType: "reverse",
+        ease: "easeInOut",
+        times: [0, 0.5, 1],
+      }}
+    />
+  );
+};
+
+const DynamicLine = ({ index }: { index: number }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const initialRotate = (index * 30) % 180;
+  const initialLeft = `${(index * 20) % 100}%`;
+  const initialTop = `${(index * 25) % 100}%`;
+
+  if (!mounted) {
+    return (
+      <div
+        className={`absolute h-0.5 sm:h-1 ${index % 2 === 0 ? 'bg-red-600' : 'bg-white'} opacity-20`}
+        style={{
+          width: '15vw',
+          transform: `rotate(${initialRotate}deg)`,
+          left: initialLeft,
+          top: initialTop,
+        }}
+      />
+    );
+  }
+
+  return (
+    <motion.div
+      className={`absolute h-0.5 sm:h-1 ${index % 2 === 0 ? 'bg-red-600' : 'bg-white'} opacity-20`}
+      style={{
+        width: '15vw',
+        transform: `rotate(${initialRotate}deg)`,
+        left: initialLeft,
+        top: initialTop,
+      }}
+      animate={{
+        opacity: [0.2, 0.5, 0.2],
+        scale: [1, 1.2, 1],
+      }}
+      transition={{
+        duration: 5 + index,
+        repeat: Infinity,
+        repeatType: "reverse"
+      }}
+    />
+  );
+};
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center p-2 sm:p-4 md:p-6">
-      {/* Animated Background Elements - Now visible on all screens */}
+      {/* Animated Background Elements */}
       <div className="absolute inset-0">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-8 sm:w-12 md:w-16 h-8 sm:h-12 md:h-16 rounded-full bg-red-600/10"
-            initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-              scale: Math.random() * 2 + 1
-            }}
-            animate={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-              scale: Math.random() * 2 + 1
-            }}
-            transition={{
-              duration: Math.random() * 10 + 5,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut"
-            }}
-          />
+        {Array.from({ length: 12 }).map((_, i) => (
+          <BackgroundElement key={i} index={i} />
         ))}
       </div>
 
@@ -52,7 +128,7 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Contact Form with Enhanced Styling */}
+          {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -98,27 +174,8 @@ export default function Home() {
         </div>
       </motion.div>
 
-      {/* Dynamic Lines - Now visible on all screens */}
-      {[...Array(6)].map((_, index) => (
-        <motion.div
-          key={index}
-          className={`absolute h-0.5 sm:h-1 ${index % 2 === 0 ? 'bg-red-600' : 'bg-white'} opacity-20`}
-          style={{
-            width: `${Math.random() * 20 + 10}vw`,
-            transform: `rotate(${Math.random() * 60 - 30}deg)`,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`
-          }}
-          animate={{
-            opacity: [0.2, 0.5, 0.2],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: Math.random() * 5 + 5,
-            repeat: Infinity,
-            repeatType: "reverse"
-          }}
-        />
+      {Array.from({ length: 6 }).map((_, index) => (
+        <DynamicLine key={index} index={index} />
       ))}
     </div>
   );
