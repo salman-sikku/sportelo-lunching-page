@@ -1,9 +1,13 @@
 "use client"
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
-import BrandLogo from "../../public/images/Sportelo Final.png"
 
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import BrandLogo from "../../public/images/Sportelo Final.png";
+import Form from "@/components/Form";
+import AboutModal from "@/components/AboutModal";
+
+// Background Element Component
 const BackgroundElement = ({ index }: { index: number }) => {
   const [mounted, setMounted] = useState(false);
 
@@ -11,13 +15,11 @@ const BackgroundElement = ({ index }: { index: number }) => {
     setMounted(true);
   }, []);
 
-  // Create more spread out initial positions
   const initialX = `${(index % 4) * 25}%`;
   const initialY = `${Math.floor(index / 4) * 25}%`;
 
-  // Generate random final positions that ensure movement
   const getFinalPosition = () => ({
-    x: `${Math.random() * 80 + 10}%`,  
+    x: `${Math.random() * 80 + 10}%`,
     y: `${Math.random() * 80 + 10}%`,
     scale: Math.random() * 1.5 + 0.5,
   });
@@ -51,6 +53,7 @@ const BackgroundElement = ({ index }: { index: number }) => {
   );
 };
 
+// Dynamic Line Component
 const DynamicLine = ({ index }: { index: number }) => {
   const [mounted, setMounted] = useState(false);
 
@@ -98,81 +101,100 @@ const DynamicLine = ({ index }: { index: number }) => {
   );
 };
 
+const MainContent = () => {
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1 }}
+      className="relative z-10 w-full max-w-[95%] sm:max-w-[90%] md:max-w-4xl mx-auto"
+    >
+      <div className="backdrop-blur-xl bg-white/5 p-3 sm:p-5 md:p-8 lg:p-12 rounded-2xl sm:rounded-3xl shadow-2xl border border-white/10">
+        <div className="flex justify-center">
+          <div className="md:w-[140px] w-[95px] md:h-[140px] h-[95px] relative">
+            <Image
+              src={BrandLogo}
+              alt="Banner Image"
+              layout="fill"
+              objectFit="contain"
+              priority
+            />
+          </div>
+        </div>
+        <div className="text-center mb-6 sm:mb-8 md:mb-11">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-red-600 mb-3 sm:mb-4 md:mb-6 font-['Orbitron']">
+            Sportelo
+          </h1>
+          <p className="text-base sm:text-lg md:text-xl text-gray-300 font-['Quicksand'] leading-relaxed max-w-2xl mx-auto px-2">
+            Get ready for an exciting journey into the world of sports! We are launching soon. Stay tuned!
+          </p>
+          <motion.button
+            onClick={() => setIsAboutOpen(true)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="mt-6 mb:px-6 px-5 py-2 md:text-base text-sm bg-gradient-to-r from-red-600 to-red-700 text-white rounded-full font-['Quicksand'] font-medium hover:shadow-lg transition-shadow"
+          >
+            About Us
+          </motion.button>
+        </div>
+        <Form />
+      </div>
+       {/* About Modal */}
+       <AboutModal 
+        isOpen={isAboutOpen} 
+        onClose={() => setIsAboutOpen(false)} 
+      />
+    </motion.div>
+  );
+};
+
 export default function Home() {
+  const [showNewYear, setShowNewYear] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowNewYear(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center p-2 sm:p-4 md:p-6">
-      {/* Animated Background Elements */}
       <div className="absolute inset-0">
         {Array.from({ length: 12 }).map((_, i) => (
           <BackgroundElement key={i} index={i} />
         ))}
       </div>
 
-      {/* Main Content Container with Glass Effect */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-        className="relative z-10 w-full max-w-[95%] sm:max-w-[90%] md:max-w-4xl mx-auto"
-      >
-        <div className="backdrop-blur-xl bg-white/5 p-4 sm:p-6 md:p-8 lg:p-12 rounded-2xl sm:rounded-3xl shadow-2xl border border-white/10">
-          <div className="flex justify-center">
-            <Image src={BrandLogo} width={140} height={140} alt="BrandLogo" />
-          </div>
-          <div className="text-center mb-6 sm:mb-8 md:mb-12">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-red-600 mb-3 sm:mb-4 md:mb-6 font-['Orbitron']">
-              Sportelo
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl text-gray-300 font-['Quicksand'] leading-relaxed max-w-2xl mx-auto px-2">
-              Get ready for an exciting journey into the world of sports! We are launching soon. Stay tuned!
-            </p>
-          </div>
-
-          {/* Contact Form */}
+      <AnimatePresence mode="wait">
+        {showNewYear ? (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="max-w-[90%] sm:max-w-md mx-auto backdrop-blur-lg bg-white/5 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-white/10"
+            key="newyear"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.8 }}
+            className="absolute z-20 w-full flex items-center justify-center"
           >
-            <p className="text-gray-300 font-['Quicksand'] text-center mb-4 sm:mb-6 text-sm sm:text-base md:text-lg">
-              Be the first to experience the future of sports community. Join our waitlist and receive exclusive early access!
-            </p>
-            <form className="space-y-3 sm:space-y-4">
-              <div>
-                <input
-                  type="text"
-                  placeholder="Your Name"
-                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl bg-black/50 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600 transition-all duration-300 font-['Quicksand'] text-sm sm:text-base"
-                />
-              </div>
-              <div>
-                <input
-                  type="email"
-                  placeholder="Your Email"
-                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl bg-black/50 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600 transition-all duration-300 font-['Quicksand'] text-sm sm:text-base"
-                />
-              </div>
-              <div>
-                <select className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl bg-black/50 border border-white/20 text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600 transition-all duration-300 font-['Quicksand'] text-sm sm:text-base">
-                  <option value="" className="bg-black">Join us as...</option>
-                  <option value="athlete" className="bg-black">Professional Athlete</option>
-                  <option value="coach" className="bg-black">Sports Coach</option>
-                  <option value="enthusiast" className="bg-black">Sports Enthusiast</option>
-                  <option value="organization" className="bg-black">Sports Organization</option>
-                </select>
-              </div>
-              <motion.button
-                whileHover={{ scale: 1.02, boxShadow: "0 0 20px rgba(239, 68, 68, 0.5)" }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full py-2.5 sm:py-3 rounded-lg sm:rounded-xl bg-gradient-to-r from-red-700 to-red-500 text-white font-bold text-sm sm:text-base md:text-lg hover:from-red-800 hover:to-red-600 transition-all duration-300 transform hover:-translate-y-1 shadow-lg font-['Quicksand']"
+            <div className="text-center">
+              <motion.h1 
+                className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white mb-4"
               >
-                Join Waitlist
-              </motion.button>
-            </form>
+                Happy New Year
+              </motion.h1>
+              <motion.span
+                className="text-6xl md:text-8xl lg:text-9xl font-bold text-red-600 font-['Orbitron']"
+              >
+                2025
+              </motion.span>
+            </div>
           </motion.div>
-        </div>
-      </motion.div>
+        ) : (
+          <MainContent />
+        )}
+      </AnimatePresence>
 
       {Array.from({ length: 6 }).map((_, index) => (
         <DynamicLine key={index} index={index} />
