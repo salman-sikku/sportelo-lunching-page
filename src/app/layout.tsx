@@ -48,7 +48,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${orbitron.variable} ${quicksand.variable}`}>,
+      <body className={`${orbitron.variable} ${quicksand.variable}`}>
         <Toaster position="top-right" richColors />
         {children}
       </body>
