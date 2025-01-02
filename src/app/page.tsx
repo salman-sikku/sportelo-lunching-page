@@ -27,7 +27,7 @@ const BackgroundElement = ({ index }: { index: number }) => {
   if (!mounted) {
     return (
       <div
-        className="absolute w-8 sm:w-12 md:w-16 h-8 sm:h-12 md:h-16 rounded-full bg-red-600/10"
+        className="absolute w-10 sm:w-14 md:w-20 h-10 sm:h-14 md:h-20 rounded-full bg-red-600/10"
         style={{ left: initialX, top: initialY }}
       />
     );
@@ -35,7 +35,7 @@ const BackgroundElement = ({ index }: { index: number }) => {
 
   return (
     <motion.div
-      className="absolute w-8 sm:w-12 md:w-16 h-8 sm:h-12 md:h-16 rounded-full bg-red-600/10"
+      className="absolute w-10 sm:w-14 md:w-20 h-10 sm:h-14 md:h-20 rounded-full bg-red-600/10"
       initial={{ left: initialX, top: initialY, scale: 1 }}
       animate={{
         left: [initialX, getFinalPosition().x, initialX],
@@ -53,53 +53,52 @@ const BackgroundElement = ({ index }: { index: number }) => {
   );
 };
 
-// Dynamic Line Component
-const DynamicLine = ({ index }: { index: number }) => {
+// Animated Sports Icon Component
+const SportIcon = ({ index, icon }: { index: number, icon: string }) => {
   const [mounted, setMounted] = useState(false);
-
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const initialRotate = (index * 30) % 180;
-  const initialLeft = `${(index * 20) % 100}%`;
-  const initialTop = `${(index * 25) % 100}%`;
+  const initialX = `${(index % 4) * 90}%`;
+  const initialY = `${Math.floor(index / 4) * 90}%`;
+
+  const getFinalPosition = () => ({
+    x: `${Math.random() * 60 + 10}%`,
+    y: `${Math.random() * 60 + 10}%`,
+  });
 
   if (!mounted) {
     return (
       <div
-        className={`absolute h-0.5 sm:h-1 ${index % 2 === 0 ? 'bg-red-600' : 'bg-white'} opacity-20`}
-        style={{
-          width: '15vw',
-          transform: `rotate(${initialRotate}deg)`,
-          left: initialLeft,
-          top: initialTop,
-        }}
+        className="absolute text-4xl"
+        style={{ left: initialX, top: initialY }}
       />
-    );
+    )
   }
 
   return (
     <motion.div
-      className={`absolute h-0.5 sm:h-1 ${index % 2 === 0 ? 'bg-red-600' : 'bg-white'} opacity-20`}
-      style={{
-        width: '15vw',
-        transform: `rotate(${initialRotate}deg)`,
-        left: initialLeft,
-        top: initialTop,
-      }}
+      key={index}
+      className="absolute text-4xl"
+      initial={{ left: initialX, top: initialY, scale: 1 }}
       animate={{
-        opacity: [0.2, 0.5, 0.2],
-        scale: [1, 1.2, 1],
+        left: [initialX, getFinalPosition().x, initialX],
+        top: [initialY, getFinalPosition().y, initialY],
+        opacity: [0.3, 0.7, 0.3],
+        rotate: [0, 360]
       }}
       transition={{
-        duration: 5 + index,
+        duration: Math.random() * 20 + 10,
         repeat: Infinity,
-        repeatType: "reverse"
+        repeatType: "reverse",
+        ease: "linear"
       }}
-    />
+    >
+      {icon}
+    </motion.div>
   );
-};
+}
 
 const MainContent = () => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
@@ -113,7 +112,7 @@ const MainContent = () => {
     >
       <div className="backdrop-blur-xl bg-white/5 p-3 sm:p-5 md:p-8 lg:p-12 rounded-2xl sm:rounded-3xl shadow-2xl border border-white/10">
         <div className="flex justify-center">
-          <div className="md:w-[140px] w-[95px] md:h-[140px] h-[95px] relative">
+          <div onClick={() => setIsAboutOpen(true)} className="md:w-[140px] w-[95px] md:h-[140px] h-[95px] relative transform hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer">
             <Image
               src={BrandLogo}
               alt="Banner Image"
@@ -141,10 +140,10 @@ const MainContent = () => {
         </div>
         <Form />
       </div>
-       {/* About Modal */}
-       <AboutModal 
-        isOpen={isAboutOpen} 
-        onClose={() => setIsAboutOpen(false)} 
+      {/* About Modal */}
+      <AboutModal
+        isOpen={isAboutOpen}
+        onClose={() => setIsAboutOpen(false)}
       />
     </motion.div>
   );
@@ -163,7 +162,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center p-2 sm:p-4 md:p-6">
       <div className="absolute inset-0">
-        {Array.from({ length: 12 }).map((_, i) => (
+        {Array.from({ length: 30 }).map((_, i) => (
           <BackgroundElement key={i} index={i} />
         ))}
       </div>
@@ -179,13 +178,13 @@ export default function Home() {
             className="absolute z-20 w-full flex items-center justify-center"
           >
             <div className="text-center">
-              <motion.h1 
+              <motion.h1
                 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white mb-4"
               >
                 Happy New Year
               </motion.h1>
               <motion.span
-                className="text-6xl md:text-8xl lg:text-9xl font-bold text-red-600 font-['Orbitron']"
+                className="text-5xl md:text-7xl lg:text-8xl font-bold text-red-600 font-['Orbitron']"
               >
                 2025
               </motion.span>
@@ -196,8 +195,9 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {Array.from({ length: 6 }).map((_, index) => (
-        <DynamicLine key={index} index={index} />
+      {/* Animated Sports Icons */}
+      {['⚽', '🏀', '🎾', '🏈', '⚾', '🏐', '🏉', '🎱', '🏓'].map((icon, index) => (
+        <SportIcon key={index} icon={icon} index={index} />
       ))}
     </div>
   );
