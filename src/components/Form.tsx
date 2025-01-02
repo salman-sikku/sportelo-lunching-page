@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 function Form() {
   const [name, setName] = useState("");
@@ -41,7 +42,7 @@ function Form() {
       });
 
       const data = await response.json();
-      console.log("Form submitted successfully:", data);
+      toast.success("Thank you for your submission! We'll get back to you soon");
 
       // Optionally reset form fields
       setName("");
@@ -61,13 +62,18 @@ function Form() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.5 }}
-      className="max-w-[90%] sm:max-w-md mx-auto backdrop-blur-lg bg-white/5 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-white/10"
+      className="relative max-w-[90%] sm:max-w-md mx-auto p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-white/10"
+      style={{
+        background: 'rgba(18, 18, 18, 0.4)',
+        WebkitBackdropFilter: 'blur(10px)',
+        backdropFilter: 'blur(10px)',
+      }}
     >
       <p className="text-gray-300 font-['Quicksand'] text-center mb-4 sm:mb-6 text-sm sm:text-base md:text-lg">
         Be the first to experience the future of sports community. Join our
         waitlist and receive exclusive early access!
       </p>
-      <form className="space-y-3 sm:space-y-4">
+      <form className="space-y-3 sm:space-y-4" onSubmit={handleSubmit}>
         <div>
           <input
             type="text"

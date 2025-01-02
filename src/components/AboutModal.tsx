@@ -59,7 +59,17 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                   </svg>
                 </button>
                 <div className="space-y-6">
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-red-600 font-['Orbitron']">
+                  <h2
+                    className="text-2xl sm:text-3xl md:text-4xl font-bold font-['Orbitron']"
+                    style={{
+                      color: '#fff',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundImage: 'linear-gradient(to right, #ffffff, #dc2626)',
+                      backgroundClip: 'text',
+                      display: 'inline-block'
+                    }}
+                  >
                     About us
                   </h2>
 
@@ -82,7 +92,6 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                         Contact Information
                       </h3>
                       <div className="space-y-2">
-                        {/* Phone */}
                         <p className="flex items-center gap-2">
                           <span className="w-5 h-5 text-red-600">
                             <RiPhoneFill />
@@ -95,7 +104,6 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                           </a>
                         </p>
 
-                        {/* Email */}
                         <p className="flex items-center gap-2">
                           <span className="w-5 h-5 text-red-600">
                             <MdOutlineMailOutline />
@@ -108,9 +116,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                           </a>
                         </p>
 
-                        {/* Social Media Icons */}
                         <div className="flex items-center space-x-4 mt-4">
-                          {/* Instagram */}
                           <a
                             href="https://www.instagram.com/invites/contact/?igsh=te5b7tfavcw6&utm_content=wszzuc7"
                             className="w-10 h-10 flex items-center justify-center bg-red-600 rounded-full hover:bg-red-700 transition"
@@ -119,7 +125,6 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                           >
                             <FaInstagram className="text-white w-5 h-5" />
                           </a>
-                          {/* Facebook */}
                           <a
                             href="https://www.facebook.com/profile.php?id=61570901674212"
                             className="w-10 h-10 flex items-center justify-center bg-blue-600 rounded-full hover:bg-blue-700 transition"
@@ -128,7 +133,6 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                           >
                             <FaFacebook className="text-white w-5 h-5" />
                           </a>
-                          {/* YouTube */}
                           <a
                             href="https://www.youtube.com/@Sportelo.youtube"
                             className="w-10 h-10 flex items-center justify-center bg-red-500 rounded-full hover:bg-red-600 transition"

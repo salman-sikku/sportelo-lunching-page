@@ -110,7 +110,13 @@ const MainContent = () => {
       transition={{ duration: 1 }}
       className="relative z-10 w-full max-w-[95%] sm:max-w-[90%] md:max-w-4xl mx-auto"
     >
-      <div className="backdrop-blur-xl bg-white/5 p-3 sm:p-5 md:p-8 lg:p-12 rounded-2xl sm:rounded-3xl shadow-2xl border border-white/10">
+      <div
+      style={{
+        background: 'rgba(18, 18, 18, 0.4)',
+        WebkitBackdropFilter: 'blur(16px)',
+        backdropFilter: 'blur(16px)',
+      }}
+       className="relative p-3 sm:p-5 md:p-8 lg:p-12 rounded-2xl sm:rounded-3xl shadow-2xl border border-white/10">
         <div className="flex justify-center">
           <div onClick={() => setIsAboutOpen(true)} className="md:w-[140px] w-[95px] md:h-[140px] h-[95px] relative transform hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer">
             <Image
@@ -123,7 +129,17 @@ const MainContent = () => {
           </div>
         </div>
         <div className="text-center mb-6 sm:mb-8 md:mb-11">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-red-600 mb-3 sm:mb-4 md:mb-6 font-['Orbitron']">
+          <h1
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold mb-3 sm:mb-4 md:mb-6 font-['Orbitron']"
+            style={{
+              color: '#fff',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundImage: 'linear-gradient(to right, #ffffff, #dc2626)',
+              backgroundClip: 'text',
+              display: 'inline-block'
+            }}
+          >
             Sportelo
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-300 font-['Quicksand'] leading-relaxed max-w-2xl mx-auto px-2">
