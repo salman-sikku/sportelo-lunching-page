@@ -372,7 +372,14 @@ export default function IPLSchedule() {
             >
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                     <h2 className="text-2xl md:text-3xl font-extrabold text-white">
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-red-600">
+                        <span style={{
+                            color: '#fff',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundImage: 'linear-gradient(to right, #ffffff, #dc2626)',
+                            backgroundClip: 'text',
+                            display: 'inline-block'
+                        }}>
                             IPL 2025 Schedule
                         </span>
                     </h2>
