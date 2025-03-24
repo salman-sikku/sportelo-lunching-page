@@ -32,7 +32,7 @@ function Form() {
     };
 
     try {
-      const response = await fetch("https://sheetdb.io/api/v1/crz0ucxmjlg22", {
+      const sheetResponse = await fetch("https://sheetdb.io/api/v1/crz0ucxmjlg22", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -41,7 +41,23 @@ function Form() {
         body: JSON.stringify({ data: [formData] }),
       });
 
-      const data = await response.json();
+      if (!sheetResponse.ok) {
+        throw new Error('Failed to submit to SheetDB');
+      }
+
+      // Send thank you email
+      const emailResponse = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email }),
+      });
+
+      if (!emailResponse.ok) {
+        throw new Error('Failed to send email');
+      }
+
       toast.success("Thank you for your submission! We'll get back to you soon");
 
       // Optionally reset form fields

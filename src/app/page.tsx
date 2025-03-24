@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import BrandLogo from "../../public/images/Sportelo Final.png";
 import Form from "@/components/Form";
 import AboutModal from "@/components/AboutModal";
+import IPLSchedule from "@/components/IPLSchedule";
 
 // Background Element Component
 const BackgroundElement = ({ index }: { index: number }) => {
@@ -104,70 +105,72 @@ const MainContent = () => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1 }}
-      className="relative z-10 w-full max-w-[95%] sm:max-w-[90%] md:max-w-4xl mx-auto"
-    >
-      <div
-      style={{
-        background: 'rgba(18, 18, 18, 0.4)',
-        WebkitBackdropFilter: 'blur(16px)',
-        backdropFilter: 'blur(16px)',
-      }}
-       className="relative p-3 sm:p-5 md:p-8 lg:p-12 rounded-2xl sm:rounded-3xl shadow-2xl border border-white/10">
-        <div className="flex justify-center">
-          <div onClick={() => setIsAboutOpen(true)} className="md:w-[140px] w-[95px] md:h-[140px] h-[95px] relative transform hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer">
-            <Image
-              src={BrandLogo}
-              alt="Banner Image"
-              layout="fill"
-              objectFit="contain"
-              priority
-            />
+    <>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        className="relative z-10 w-full max-w-[95%] sm:max-w-[90%] md:max-w-4xl mx-auto"
+      >
+        <IPLSchedule />
+        <div
+          style={{
+            background: 'rgba(18, 18, 18, 0.4)',
+            WebkitBackdropFilter: 'blur(16px)',
+            backdropFilter: 'blur(16px)',
+          }}
+          className="relative p-3 sm:p-5 md:p-8 lg:p-12 rounded-2xl sm:rounded-3xl shadow-2xl border border-white/10">
+          <div className="flex justify-center">
+            <div onClick={() => setIsAboutOpen(true)} className="md:w-[140px] w-[95px] md:h-[140px] h-[95px] relative transform hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer">
+              <Image
+                src={BrandLogo}
+                alt="Banner Image"
+                layout="fill"
+                objectFit="contain"
+                priority
+              />
+            </div>
           </div>
+          <div className="text-center mb-6 sm:mb-8 md:mb-11">
+            <h1
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold mb-3 sm:mb-4 md:mb-6 font-['Orbitron']"
+              style={{
+                color: '#fff',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundImage: 'linear-gradient(to right, #ffffff, #dc2626)',
+                backgroundClip: 'text',
+                display: 'inline-block'
+              }}
+            >
+              Sportelo
+            </h1>
+            <p className="text-base sm:text-lg md:text-xl text-gray-300 font-['Quicksand'] leading-relaxed max-w-2xl mx-auto px-2">
+              Get ready for an exciting journey into the world of sports! We are launching soon. Stay tuned!
+            </p>
+            <motion.button
+              onClick={() => setIsAboutOpen(true)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="mt-6 mb:px-6 px-5 py-2 md:text-base text-sm bg-gradient-to-r from-red-600 to-red-700 text-white rounded-full font-['Quicksand'] font-medium hover:shadow-lg transition-shadow"
+            >
+              About Us
+            </motion.button>
+          </div>
+          <Form />
         </div>
-        <div className="text-center mb-6 sm:mb-8 md:mb-11">
-          <h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold mb-3 sm:mb-4 md:mb-6 font-['Orbitron']"
-            style={{
-              color: '#fff',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundImage: 'linear-gradient(to right, #ffffff, #dc2626)',
-              backgroundClip: 'text',
-              display: 'inline-block'
-            }}
-          >
-            Sportelo
-          </h1>
-          <p className="text-base sm:text-lg md:text-xl text-gray-300 font-['Quicksand'] leading-relaxed max-w-2xl mx-auto px-2">
-            Get ready for an exciting journey into the world of sports! We are launching soon. Stay tuned!
-          </p>
-          <motion.button
-            onClick={() => setIsAboutOpen(true)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="mt-6 mb:px-6 px-5 py-2 md:text-base text-sm bg-gradient-to-r from-red-600 to-red-700 text-white rounded-full font-['Quicksand'] font-medium hover:shadow-lg transition-shadow"
-          >
-            About Us
-          </motion.button>
-        </div>
-        <Form />
-      </div>
-      {/* About Modal */}
-      <AboutModal
-        isOpen={isAboutOpen}
-        onClose={() => setIsAboutOpen(false)}
-      />
-    </motion.div>
+        {/* About Modal */}
+        <AboutModal
+          isOpen={isAboutOpen}
+          onClose={() => setIsAboutOpen(false)}
+        />
+      </motion.div>
+    </>
   );
 };
 
 export default function Home() {
   const [showNewYear, setShowNewYear] = useState(true);
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowNewYear(false);
@@ -177,11 +180,11 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center p-2 sm:p-4 md:p-6">
-      <div className="absolute inset-0">
+      {/* <div className="absolute inset-0">
         {Array.from({ length: 30 }).map((_, i) => (
           <BackgroundElement key={i} index={i} />
         ))}
-      </div>
+      </div> */}
 
       <AnimatePresence mode="wait">
         {showNewYear ? (
@@ -197,7 +200,7 @@ export default function Home() {
               <motion.h1
                 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white mb-4"
               >
-                Happy New Year
+                IPL
               </motion.h1>
               <motion.span
                 className="text-5xl md:text-7xl lg:text-8xl font-bold text-red-600 font-['Orbitron']"
@@ -207,12 +210,14 @@ export default function Home() {
             </div>
           </motion.div>
         ) : (
-          <MainContent />
+          <>
+            <MainContent />
+          </>
         )}
       </AnimatePresence>
 
       {/* Animated Sports Icons */}
-      {['⚽', '🏀', '🎾', '🏈', '⚾', '🏐', '🏉', '🎱', '🏓'].map((icon, index) => (
+      {['⚽', '🏀', '🎾', '🏈', '⚾', '🏐', '🏉', '🎱', '🏓', '🏏'].map((icon, index) => (
         <SportIcon key={index} icon={icon} index={index} />
       ))}
     </div>
